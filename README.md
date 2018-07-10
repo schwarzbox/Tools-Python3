@@ -1,6 +1,6 @@
 # Tools-Python3
 
-CLI Scripts
+Scripts
 
 # xcodeimg.py
 
