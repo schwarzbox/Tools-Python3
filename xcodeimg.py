@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 """
+XCODE ICONS
+
 Create AppIcon (Mac, iPhone/iPad, Apple Watch) LaunchImage (iOS) iTunesArtwork.
 
 Args.
@@ -448,7 +450,7 @@ def main(images):
             }
         }
     else:
-        print('No AppIcon')
+        print('No AppIcon.')
         typeic = 'n'
 
     img_lch = Image.open(os.path.realpath(image_launch))
@@ -641,7 +643,7 @@ def main(images):
         }
 
     else:
-        print('No LaunchImage')
+        print('No LaunchImage.')
 
         typelnc = 'n'
 
@@ -683,14 +685,14 @@ def main(images):
     if len(all_images) > 0:
         for i in all_images:
             create_image(*i)
-        print('Images created - ', end='')
-        print(os.getcwd())
+        print('Create iconset:', os.getcwd())
     else:
         # clean dir
         rmtree(os.getcwd())
 
 
 if __name__ == '__main__':
+    print('Xcode iconset.')
     img = []
     type_img = ('.png', '.gif', '.jpeg', '.jpg', '.tif', '.tiff', '.psd')
     if len(sys.argv) > 1:
@@ -700,8 +702,6 @@ if __name__ == '__main__':
                 img.append(i)
 
     elif len(sys.argv) == 1:
-        print('Use images in current dir!')
-
         for i in [i for i in os.listdir() if os.path.isfile(i)]:
             extens = os.path.splitext(i)[-1].lower()
 
@@ -712,6 +712,6 @@ if __name__ == '__main__':
     if len(img) > 0:
         main(img)
     else:
-        print('Enter correct path.')
+        print('Error: Enter correct path.', end=' ')
         print('Put "icon.*" or "launch.*" image in current dir.')
         print('Supported formats: png, gif, jpeg, jpg, tif, tiff.')

@@ -66,3 +66,11 @@ Stdin without imgmap.py.
 ``` bash
 echo '[[1,1,0,1,1],[0,0,1,0,0],[1,1,0,1,1]]' | mapimg.py
 ```
+Stdin without imgmap.py + scale.
+``` bash
+echo '[[0,1,0],[1,1,1],[0,1,0]]' | mapimg.py -4 128,128,128,255
+```
+Stdin without imgmap.py + scale and 2 colors
+``` bash
+echo '[[1,1,2,1,1],[0,2,1,2,0],[1,1,2,1,1]]' | mapimg.py -4 222,0,222,255 128,128,128,255
+```

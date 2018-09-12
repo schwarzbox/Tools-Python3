@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Script for create matrix from image.
+MATRIX -> IMAGE.
 
 Use imgmap.py with mapimg.py.
 
@@ -15,6 +15,7 @@ $ echo 'test.png' | imgmap.py | mapimg.py 222,0,222,220
 Stdout.
 $ imgmap.py icon.png >> out.txt
 """
+
 __version__ = 1.0
 
 # imgmap.py
@@ -40,7 +41,6 @@ __version__ = 1.0
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-
 # use black, white or transparent background
 # indexed colors - faster and better, resolution <600 px
 # PNG: trasparent - OK,  white - OK, black - OK, indexed - OK, RGB - BAD
@@ -48,10 +48,9 @@ __version__ = 1.0
 # TIFF: transparent - OK, white - OK, black - OK, indexed - OK, RGB - OK
 # JPEG: transparent - NO, white - BAD, black - BAD indexed - NO, RGB - BAD
 
-
 from glob import glob
 from os import path
-from sys import argv, stderr, stdin
+from sys import argv, stderr, stdin, stdout
 
 from PIL import Image
 
@@ -78,12 +77,12 @@ def image_matrix(img):
         w, h = image.size
 
         # create map image
-        map_image = [[0] * h for i in range(w)]
+        map_image = [[0] * w for i in range(h)]
 
         colors = dict()
         # create map with colors
-        for x in range(w):
-            for y in range(h):
+        for y in range(h):
+            for x in range(w):
                 pix = image.getpixel((x, y))
 
                 if pix != back:
@@ -92,18 +91,18 @@ def image_matrix(img):
                     else:
                         colors[pix] += 1
 
-                    map_image[x][y] = pix
+                    map_image[y][x] = pix
 
         # sort colors for find main color
         sort_colors = sorted(list(colors.items()),
                              key=lambda i: i[1], reverse=True)
 
         # put  numbers to code colors
-        for x in range(w):
+        for y in range(h):
             for num, item in enumerate(sort_colors, 1):
-                for y in range(h):
-                    if map_image[x][y] == item[0]:
-                        map_image[x][y] = num
+                for x in range(w):
+                    if map_image[y][x] == item[0]:
+                        map_image[y][x] = num
 
         return map_image
 
@@ -111,7 +110,6 @@ def image_matrix(img):
 if __name__ == '__main__':
     inp = []
     EXT = ('*.jpeg', '*.jpg', '*.png', '*.gif', '*.tiff', '*.tif', '*.bmp')
-
     if argv[1:]:
         inp = [i for i in argv[1:] if path.exists(i)]
     elif stdin.isatty() is False:
@@ -124,7 +122,7 @@ if __name__ == '__main__':
         inp = [image for list_ in all_images
                for image in list_]
     else:
-        stderr.write('ERROR: empty input\n')
+        stderr.write('Error: empty input\n')
     if inp:
         map_collection = []
         for i in inp:
@@ -133,11 +131,11 @@ if __name__ == '__main__':
                 map_collection.append(matrix)
             else:
                 stderr.write(
-                    'ERROR: use black, white or transparent background\n'
+                    'Error: use black/white/transparent background\n'
                 )
 
         for i in map_collection:
             # use print easiest way but it is also a string
             print(i)
     else:
-        stderr.write('ERROR: wrong path\n')
+        stderr.write('Error: wrong path\n')
